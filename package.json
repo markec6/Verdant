@@ -1,10 +1,11 @@
 {
+  "name": "verdant",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "vercel-build": "npm install && next build"
+    "lint": "next lint"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
