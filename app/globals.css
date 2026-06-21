@@ -1641,6 +1641,61 @@ body::before {
   .card-expand-reveal__icon {
     backdrop-filter: none;
   }
+
+  .service-map {
+    min-height: 40rem;
+    padding-bottom: 7.5rem;
+  }
+
+  .service-map__caption {
+    bottom: 0.85rem;
+  }
+
+  .service-map__zone[data-zone="Novi Beograd"] {
+    top: 46% !important;
+    left: 50% !important;
+  }
+
+  .site-footer__cta {
+    gap: 0.35rem;
+  }
+
+  .slide-to-call {
+    margin-top: -1rem;
+  }
+
+  .process-card,
+  .difference-card {
+    will-change: transform;
+  }
+
+  .process-card {
+    transition:
+      box-shadow 200ms ease-out,
+      background 200ms ease-out;
+  }
+
+  .difference-card__surface {
+    transition:
+      transform 200ms ease-out,
+      box-shadow 200ms ease-out,
+      background 200ms ease-out;
+  }
+
+  .process-card__details,
+  .difference-card__details {
+    transition:
+      grid-template-rows 200ms ease-out,
+      opacity 200ms ease-out,
+      transform 200ms ease-out,
+      margin 200ms ease-out;
+  }
+
+  .card-reveal-indicator {
+    transition:
+      color 200ms ease-out,
+      transform 200ms ease-out;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

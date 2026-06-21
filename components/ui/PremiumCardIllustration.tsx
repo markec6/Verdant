@@ -349,6 +349,7 @@ export default function PremiumCardIllustration({
       }
       className={iconClassName}
       initial={false}
+      layout={false}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <IllustrationArt colors={colors} isActive={isActive} variant={variant} />

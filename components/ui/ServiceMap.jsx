@@ -14,6 +14,7 @@ export default function ServiceMap() {
           className={`service-map__zone ${
             activeZone === zone.name ? "is-active" : ""
           }`.trim()}
+          data-zone={zone.name}
           key={zone.name}
           onClick={() => setActiveZone(zone.name)}
           style={{ top: zone.top, left: zone.left }}
