@@ -1,8 +1,8 @@
 "use client";
 
 import AnimatedHighlight from "./AnimatedHighlight";
+import CardExpandReveal from "./CardExpandReveal";
 import CardRevealIndicator from "./CardRevealIndicator";
-import PremiumCardIllustration from "./PremiumCardIllustration";
 
 type DifferenceCardData = {
   id: string;
@@ -75,10 +75,11 @@ export default function DifferenceCard({
           className={`difference-card__details ${isOpen ? "is-visible" : ""}`.trim()}
         >
           <div className="difference-card__details-inner">
-            <div className="card-expand-body">
-              <p className="difference-card__detail-text text-left">{card.detail}</p>
-              <PremiumCardIllustration isActive={isOpen} variant={card.id} />
-            </div>
+            <CardExpandReveal
+              detail={card.detail}
+              isActive={isOpen}
+              variant={card.id}
+            />
           </div>
         </div>
       </div>

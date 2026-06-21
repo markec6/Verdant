@@ -1,8 +1,8 @@
 "use client";
 
 import AnimatedHighlight from "./AnimatedHighlight";
+import CardExpandReveal from "./CardExpandReveal";
 import CardRevealIndicator from "./CardRevealIndicator";
-import PremiumCardIllustration from "./PremiumCardIllustration";
 
 type ProcessStep = {
   id: string;
@@ -58,12 +58,12 @@ export default function ProcessCard({
         className={`process-card__details ${isOpen ? "is-visible" : ""}`.trim()}
       >
         <div className="process-card__details-inner">
-          <div className="card-expand-body">
-            <p className="process-card__detail-text process-card__detail-text--solo text-left">
-              {step.detail}
-            </p>
-            <PremiumCardIllustration isActive={isOpen} variant={step.id} />
-          </div>
+          <CardExpandReveal
+            detail={step.detail}
+            isActive={isOpen}
+            tone="dark"
+            variant={step.id}
+          />
         </div>
       </div>
     </article>

@@ -1,7 +1,7 @@
 import { footerLinks } from "../../lib/verdantData";
 import AnimatedHighlight from "../ui/AnimatedHighlight";
-import Button from "../ui/Button";
 import SectionContainer from "../ui/SectionContainer";
+import SlideToCall from "../ui/SlideToCall";
 
 export default function Footer() {
   const links = [
@@ -17,9 +17,7 @@ export default function Footer() {
           <h2 className="site-footer__title font-heading font-bold tracking-tight leading-tight">
             Zakaži <AnimatedHighlight text="besplatnu" tone="light" /> procenu
           </h2>
-          <Button href="mailto:contact@verdant.rs" variant="secondary">
-            Kontaktirajte nas
-          </Button>
+          <SlideToCall />
         </div>
 
         <div className="site-footer__bottom">
