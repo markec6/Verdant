@@ -618,7 +618,6 @@ body::before {
 
 .difference-card {
   min-width: 0;
-  min-height: 22rem;
   border: 0;
   background: transparent;
   padding: 0;
@@ -627,10 +626,9 @@ body::before {
 
 .difference-card__surface {
   display: flex;
-  height: 100%;
-  min-height: 22rem;
   flex-direction: column;
-  padding: 2rem;
+  align-items: flex-start;
+  padding: 1.2rem 1.35rem 1rem;
   border: 1px solid rgba(45, 90, 39, 0.1);
   border-radius: 28px;
   background: rgba(45, 90, 39, 0.08);
@@ -643,46 +641,57 @@ body::before {
 }
 
 .difference-card:hover:not(.is-expanded) .difference-card__surface {
-  transform: translateY(-0.5rem);
-  box-shadow: 0 28px 64px rgba(18, 32, 15, 0.14);
+  transform: translateY(-0.35rem);
+  box-shadow: 0 20px 48px rgba(18, 32, 15, 0.12);
 }
 
 .difference-card.is-expanded .difference-card__surface {
-  min-height: auto;
   background: rgba(45, 90, 39, 0.12);
-  box-shadow: 0 24px 64px rgba(18, 32, 15, 0.16);
+  box-shadow: 0 20px 48px rgba(18, 32, 15, 0.14);
   transform: none;
 }
 
 .difference-card__icon {
   display: grid;
-  width: 3.1rem;
-  height: 3.1rem;
+  width: 2.85rem;
+  height: 2.85rem;
   flex-shrink: 0;
   place-items: center;
   border-radius: 999px;
   background: rgba(45, 90, 39, 0.14);
   color: var(--forest);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 800;
 }
 
 .difference-card__content {
-  margin-top: 1.25rem;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 0.85rem;
+  text-align: left;
 }
 
 .difference-card__content h3 {
   margin: 0;
+  text-align: left;
 }
 
 .difference-card__content p {
-  margin: 0.75rem 0 0;
+  margin: 0.55rem 0 0;
   color: var(--muted);
-  line-height: 1.65;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.difference-card__indicator {
+  margin-top: 0.75rem;
 }
 
 .difference-card__details {
   display: grid;
+  width: 100%;
   grid-template-rows: 0fr;
   opacity: 0;
   transform: translateY(-0.5rem);
@@ -698,37 +707,88 @@ body::before {
   grid-template-rows: 1fr;
   opacity: 1;
   transform: translateY(0);
-  margin-top: 1.25rem;
+  margin-top: 1rem;
 }
 
 .difference-card__details-inner {
   overflow: hidden;
 }
 
-.difference-card__list {
-  display: grid;
-  gap: 0.85rem;
+.difference-card__detail-text {
   margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.difference-card__list li {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.75rem;
-  align-items: start;
-  color: var(--ink);
+  color: var(--forest-deep);
   font-size: 0.95rem;
+  font-weight: 600;
   line-height: 1.5;
+  text-align: left;
 }
 
-.difference-card__bullet {
-  width: 0.45rem;
-  height: 0.45rem;
-  margin-top: 0.45rem;
-  border-radius: 999px;
-  background: var(--forest);
+.card-expand-body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
+}
+
+.card-animated-illustration {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.85rem;
+  padding: 0.35rem 0 0.15rem;
+}
+
+.card-animated-illustration__frame {
+  display: grid;
+  place-items: center;
+  width: 6.5rem;
+  height: 6rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.62) 0%,
+    rgba(244, 247, 242, 0.92) 100%
+  );
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.premium-card-art__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.card-reveal-indicator {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-left: auto;
+  color: var(--forest);
+  transform: translateY(0) rotate(0deg);
+  transition:
+    color 280ms ease,
+    transform 280ms ease;
+  will-change: transform;
+}
+
+.card-reveal-indicator:not(.is-open) {
+  animation: processIndicatorBounce 1.8s ease-in-out infinite;
+}
+
+.card-reveal-indicator.is-open {
+  animation: none;
+  color: #4f9a42;
+  transform: translateY(0) rotate(180deg);
+}
+
+.card-reveal-indicator__svg {
+  display: block;
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 @media (max-width: 1023px) {
@@ -742,10 +802,6 @@ body::before {
     max-width: 42rem;
     margin-right: auto;
     margin-left: auto;
-  }
-
-  .difference-card__surface {
-    padding: 2.75rem;
   }
 }
 
@@ -950,21 +1006,102 @@ body::before {
 
 .process-card {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: flex-start;
-  gap: 1.25rem;
+  gap: 0;
   width: 100%;
   padding: 1.4rem;
   border: 1px solid var(--line);
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.62);
   text-align: left;
+  cursor: pointer;
+  transition:
+    box-shadow 220ms ease,
+    background 220ms ease;
+}
+
+.process-card:hover:not(.is-expanded) {
+  box-shadow: 0 18px 42px rgba(18, 32, 15, 0.1);
+}
+
+.process-card.is-expanded {
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 20px 48px rgba(18, 32, 15, 0.12);
+}
+
+.process-card__main {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1.25rem;
+  width: 100%;
+  text-align: left;
 }
 
 .process-card__content,
 .process-card h3,
 .process-card p {
+  text-align: left;
+}
+
+.process-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.process-card__indicator {
+  margin-top: 0.85rem;
+}
+
+@keyframes processIndicatorBounce {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(4px) rotate(0deg);
+  }
+}
+
+.process-card__details {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  transition:
+    grid-template-rows 360ms ease,
+    opacity 280ms ease,
+    transform 280ms ease,
+    margin 280ms ease;
+  margin-top: 0;
+}
+
+.process-card__details.is-visible {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 1.25rem;
+}
+
+.process-card__details-inner {
+  overflow: hidden;
+}
+
+.process-card__detail-text--solo {
+  padding-left: 5.25rem;
+}
+
+.process-card__detail-text {
+  margin: 0;
+  color: var(--forest-deep);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.5;
   text-align: left;
 }
 
@@ -1302,14 +1439,6 @@ body::before {
 
   .difference-grid {
     grid-template-columns: 1fr;
-  }
-
-  .difference-card {
-    min-height: 20rem;
-  }
-
-  .difference-card__surface {
-    min-height: 20rem;
   }
 
   .hero__tooltip {

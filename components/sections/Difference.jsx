@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { differenceCards } from "../../lib/verdantData";
 import AnimatedHighlight from "../ui/AnimatedHighlight";
+import DifferenceCard from "../ui/DifferenceCard";
 import SectionContainer from "../ui/SectionContainer";
 
 export default function Difference() {
@@ -43,73 +44,14 @@ export default function Difference() {
         </div>
 
         <div className="difference-grid">
-          {differenceCards.map((card) => {
-            const isExpanded = expandedId === card.id;
-
-            return (
-              <article
-                aria-expanded={isExpanded}
-                className={`difference-card ${isExpanded ? "is-expanded" : ""}`.trim()}
-                key={card.id}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleCard(card.id);
-                }}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    toggleCard(card.id);
-                  }
-
-                  if (event.key === "Escape") {
-                    setExpandedId(null);
-                  }
-                }}
-                role="button"
-                tabIndex={0}
-              >
-                <div className="difference-card__surface">
-                  <span className="difference-card__icon" aria-hidden="true">
-                    {card.icon}
-                  </span>
-                  <div className="difference-card__content">
-                    <h3 className="font-heading font-bold tracking-tight leading-tight">
-                      {card.id === "team" && (
-                        <>Stručni <AnimatedHighlight text="kadar" /></>
-                      )}
-                      {card.id === "equipment" && (
-                        <>Premium <AnimatedHighlight text="oprema" /></>
-                      )}
-                      {card.id === "eco" && (
-                        <><AnimatedHighlight text="Ekološki" /> pristup</>
-                      )}
-                    </h3>
-                    <p>{card.body}</p>
-                  </div>
-
-                  <div
-                    className={`difference-card__details ${
-                      isExpanded ? "is-visible" : ""
-                    }`.trim()}
-                  >
-                    <div className="difference-card__details-inner">
-                      <ul className="difference-card__list">
-                        {card.details.map((item) => (
-                          <li key={item}>
-                            <span
-                              aria-hidden="true"
-                              className="difference-card__bullet"
-                            />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+          {differenceCards.map((card) => (
+            <DifferenceCard
+              card={card}
+              isOpen={expandedId === card.id}
+              key={card.id}
+              onToggle={() => toggleCard(card.id)}
+            />
+          ))}
         </div>
       </SectionContainer>
     </section>

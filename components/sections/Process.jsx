@@ -1,8 +1,34 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { processSteps } from "../../lib/verdantData";
 import AnimatedHighlight from "../ui/AnimatedHighlight";
+import ProcessCard from "../ui/ProcessCard";
 import SectionContainer from "../ui/SectionContainer";
 
 export default function Process() {
+  const [expandedId, setExpandedId] = useState(null);
+
+  useEffect(() => {
+    if (!expandedId) {
+      return undefined;
+    }
+
+    const handlePointerDown = (event) => {
+      if (!event.target.closest(".process-card")) {
+        setExpandedId(null);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [expandedId]);
+
+  const toggleCard = (stepId) => {
+    setExpandedId((current) => (current === stepId ? null : stepId));
+  };
+
   return (
     <section className="section process-section" id="process">
       <SectionContainer>
@@ -20,20 +46,13 @@ export default function Process() {
 
         <div className="process-timeline">
           {processSteps.map((step, index) => (
-            <article
-              className="process-card flex w-full flex-row items-start justify-start gap-5 text-left"
-              key={step.title}
-            >
-              <span className="process-card__num shrink-0">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <div className="process-card__content min-w-0 flex-1 text-left">
-                <h3 className="text-left font-heading font-bold tracking-tight leading-tight">
-                  <AnimatedHighlight text={step.title} />
-                </h3>
-                <p className="text-left">{step.body}</p>
-              </div>
-            </article>
+            <ProcessCard
+              index={index}
+              isOpen={expandedId === step.id}
+              key={step.id}
+              onToggle={() => toggleCard(step.id)}
+              step={step}
+            />
           ))}
         </div>
       </SectionContainer>
