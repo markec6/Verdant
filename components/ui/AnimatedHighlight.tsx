@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
+import useIsMobile from "../../lib/useIsMobile";
 
 type AnimatedHighlightProps = {
   text: string;
@@ -27,21 +28,17 @@ export default function AnimatedHighlight({
   text,
   tone = "default",
 }: AnimatedHighlightProps) {
-  const [isMounted, setIsMounted] = useState(false);
+  const isMobile = useIsMobile();
   const highlightMotion = getHighlightMotion(tone);
   const cleanText = useMemo(() => sanitizeHighlightText(text), [text]);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (isMounted) {
-    return (
-      <motion.span className="text-highlight" {...highlightMotion}>
-        {cleanText}
-      </motion.span>
-    );
+  if (isMobile) {
+    return <span className="text-highlight">{cleanText}</span>;
   }
 
-  return <span className="text-highlight">{cleanText}</span>;
+  return (
+    <motion.span className="text-highlight" {...highlightMotion}>
+      {cleanText}
+    </motion.span>
+  );
 }

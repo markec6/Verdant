@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import useIsMobile from "../lib/useIsMobile";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import BeforeAfter from "./sections/BeforeAfter";
@@ -13,6 +14,7 @@ import EstimateModal from "./ui/EstimateModal";
 const observedSections = ["top", "work", "process", "contact"];
 
 export default function HomePageClient() {
+  const isMobile = useIsMobile();
   const [activeSection, setActiveSection] = useState("top");
   const [isScrolledPastIntro, setIsScrolledPastIntro] = useState(false);
   const [isEstimateOpen, setIsEstimateOpen] = useState(false);
@@ -44,6 +46,11 @@ export default function HomePageClient() {
   }, []);
 
   useEffect(() => {
+    if (isMobile) {
+      setIsScrolledPastIntro(false);
+      return undefined;
+    }
+
     let frameId = 0;
     let ticking = false;
 
@@ -66,7 +73,7 @@ export default function HomePageClient() {
       window.removeEventListener("scroll", handleScroll);
       window.cancelAnimationFrame(frameId);
     };
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     const elements = observedSections

@@ -6,6 +6,15 @@ import AnimatedHighlight from "../ui/AnimatedHighlight";
 import Button from "../ui/Button";
 import SectionContainer from "../ui/SectionContainer";
 
+const HERO_IMAGE_BASE =
+  "https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop";
+const HERO_IMAGE_SRC = `${HERO_IMAGE_BASE}&w=800&q=75`;
+const HERO_IMAGE_SRCSET = [
+  `${HERO_IMAGE_BASE}&w=480&q=75 480w`,
+  `${HERO_IMAGE_BASE}&w=800&q=75 800w`,
+  `${HERO_IMAGE_BASE}&w=1200&q=75 1200w`,
+].join(", ");
+
 export default function Hero({ isOpeningModal, isScrolledPastIntro, onOpenEstimate }) {
   const [isMounted, setIsMounted] = useState(false);
   const [activePoint, setActivePoint] = useState(null);
@@ -63,7 +72,19 @@ export default function Hero({ isOpeningModal, isScrolledPastIntro, onOpenEstima
           </div>
 
           <div className="hero__image" aria-label="Premium maintained lawn">
-            <div aria-hidden="true" className="hero__image-surface" />
+            <div aria-hidden="true" className="hero__image-surface">
+              <img
+                alt=""
+                className="hero__image-photo"
+                decoding="async"
+                height={900}
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 40vw"
+                src={HERO_IMAGE_SRC}
+                srcSet={HERO_IMAGE_SRCSET}
+                width={1200}
+              />
+            </div>
             <div className="hero__image-card">
               <div>
                 <p className="hero__metric">1,200+</p>
