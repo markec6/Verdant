@@ -1,0 +1,23 @@
+# Smeće i dependency-i
+node_modules/
+.next/
+out/
+build/
+
+# Okruženje i ključevi (NAJVAŽNIJE!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logovi i debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+.turbo/
+
+# OS specifično
+.DS_Store
+Thumbs.db
