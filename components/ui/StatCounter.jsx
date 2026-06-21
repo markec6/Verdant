@@ -1,30 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { motion, useInView, useSpring, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
-export default function StatCounter({ target = 1200 }) {
-  const [value, setValue] = useState(0);
+const DEFAULT_TARGET = 1200;
+
+export default function StatCounter({ target = DEFAULT_TARGET }) {
+  const [isMounted, setIsMounted] = useState(false);
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.45 });
+  const spring = useSpring(0, { stiffness: 60, damping: 20 });
+  const display = useTransform(spring, (latest) =>
+    Math.floor(latest).toLocaleString("en-US"),
+  );
 
   useEffect(() => {
-    let frameId;
-    const duration = 1200;
-    const startedAt = performance.now();
+    setIsMounted(true);
+  }, []);
 
-    const tick = (now) => {
-      const progress = Math.min((now - startedAt) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
+  useEffect(() => {
+    if (!isMounted || !isInView) {
+      return;
+    }
 
-      setValue(Math.round(target * eased));
+    spring.set(target);
+  }, [isInView, isMounted, spring, target]);
 
-      if (progress < 1) {
-        frameId = requestAnimationFrame(tick);
-      }
-    };
+  if (!isMounted) {
+    return (
+      <span className="impact-stat__counter" ref={containerRef}>
+        <span className="impact-stat__counter-value">0</span>
+        <span className="impact-stat__suffix">+</span>
+      </span>
+    );
+  }
 
-    frameId = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(frameId);
-  }, [target]);
-
-  return <span>{value.toLocaleString("en-US")}+</span>;
+  return (
+    <span className="impact-stat__counter" ref={containerRef}>
+      <motion.span className="impact-stat__counter-value">{display}</motion.span>
+      <span className="impact-stat__suffix">+</span>
+    </span>
+  );
 }

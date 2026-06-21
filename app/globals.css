@@ -1245,6 +1245,23 @@ body::before {
   letter-spacing: -0.08em;
 }
 
+.impact-stat__counter {
+  display: inline-flex;
+  align-items: baseline;
+  will-change: transform;
+}
+
+.impact-stat__counter-value {
+  display: inline-block;
+  min-width: 3.5ch;
+  font-variant-numeric: tabular-nums;
+}
+
+.impact-stat__suffix {
+  display: inline-block;
+  margin-left: 0.02em;
+}
+
 .impact-stat__label {
   display: block;
   margin-top: 0.8rem;
