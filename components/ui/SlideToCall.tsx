@@ -12,6 +12,7 @@ import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
 const PHONE_HREF = "tel:+381600000000";
 const COMPLETE_RATIO = 0.88;
+const RESET_DELAY_MS = 500;
 
 const snapSpring = {
   type: "spring" as const,
@@ -27,12 +28,7 @@ const successSpring = {
   mass: 0.9,
 };
 
-const exitTransition = {
-  duration: 0.42,
-  ease: [0.4, 0, 0.2, 1] as const,
-};
-
-type SlideStatus = "idle" | "success" | "exiting";
+type SlideStatus = "idle" | "success";
 
 export default function SlideToCall() {
   const constraintsRef = useRef<HTMLDivElement>(null);
@@ -78,8 +74,8 @@ export default function SlideToCall() {
     };
   }, [measureDragRange]);
 
-  const resetHandle = useCallback(() => {
-    animate(x, 0, snapSpring);
+  const resetHandle = useCallback(async () => {
+    await animate(x, 0, snapSpring);
   }, [x]);
 
   const completeCall = useCallback(async () => {
@@ -91,17 +87,16 @@ export default function SlideToCall() {
     setStatus("success");
 
     await animate(x, maxDragRef.current, successSpring);
-    await new Promise((resolve) => {
-      window.setTimeout(resolve, 360);
-    });
-
-    setStatus("exiting");
-    await new Promise((resolve) => {
-      window.setTimeout(resolve, exitTransition.duration * 1000);
-    });
-
     window.location.href = PHONE_HREF;
-  }, [x]);
+
+    await new Promise((resolve) => {
+      window.setTimeout(resolve, RESET_DELAY_MS);
+    });
+
+    setStatus("idle");
+    await resetHandle();
+    isCompletingRef.current = false;
+  }, [resetHandle, x]);
 
   const handleDragEnd = useCallback(
     (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -118,7 +113,7 @@ export default function SlideToCall() {
         return;
       }
 
-      resetHandle();
+      void resetHandle();
     },
     [completeCall, resetHandle, status, x],
   );
@@ -126,18 +121,7 @@ export default function SlideToCall() {
   const isInteractive = status === "idle";
 
   return (
-    <motion.div
-      animate={
-        status === "exiting"
-          ? { opacity: 0, scale: 0.94, y: 6, filter: "blur(4px)" }
-          : { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }
-      }
-      aria-label="Povucite za poziv"
-      className="slide-to-call"
-      initial={false}
-      role="group"
-      transition={exitTransition}
-    >
+    <div aria-label="Povucite za poziv" className="slide-to-call" role="group">
       <div className="slide-to-call__track">
         <motion.div
           aria-hidden="true"
@@ -173,6 +157,6 @@ export default function SlideToCall() {
           </motion.button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

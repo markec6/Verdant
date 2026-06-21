@@ -295,7 +295,7 @@ body::before {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 1rem;
   flex-wrap: wrap;
   padding-bottom: 5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
@@ -344,6 +344,7 @@ body::before {
 .slide-to-call {
   width: min(100%, 19.5rem);
   flex-shrink: 0;
+  margin-top: -0.25rem;
 }
 
 .slide-to-call__track {
@@ -479,50 +480,17 @@ body::before {
 }
 
 .hero__methodology {
-  position: relative;
   width: fit-content;
   margin-top: 1rem;
 }
 
-.hero__methodology-trigger {
-  border: 0;
-  background: transparent;
+.hero__methodology-label {
+  margin: 0;
   color: var(--forest);
-  cursor: pointer;
   font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.16em;
-  padding: 0;
   text-transform: uppercase;
-}
-
-.hero__methodology-panel {
-  position: absolute;
-  top: calc(100% + 0.8rem);
-  left: 0;
-  z-index: 3;
-  width: min(20rem, calc(100vw - 2rem));
-  padding: 1rem;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: rgba(244, 247, 242, 0.9);
-  color: var(--muted);
-  line-height: 1.55;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(0.5rem);
-  transition:
-    opacity 180ms ease,
-    transform 180ms ease;
-  backdrop-filter: blur(18px);
-  box-shadow: 0 18px 48px rgba(18, 32, 15, 0.12);
-}
-
-.hero__methodology:hover .hero__methodology-panel,
-.hero__methodology-panel.is-visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
 }
 
 .hero__actions {
@@ -1467,11 +1435,13 @@ body::before {
   .site-footer__cta {
     align-items: flex-start;
     flex-direction: column;
+    gap: 0.75rem;
   }
 
   .slide-to-call {
     width: 100%;
     max-width: 22rem;
+    margin-top: -0.5rem;
   }
 
   .site-footer__bottom {
@@ -1500,7 +1470,12 @@ body::before {
   }
 
   .section {
-    padding: 5rem 0;
+    padding: calc(5rem - 6px) 0;
+  }
+
+  .site-footer {
+    padding-top: calc(7rem - 6px);
+    padding-bottom: calc(2rem - 6px);
   }
 
   .site-header__inner {
@@ -1519,7 +1494,8 @@ body::before {
 
   .hero {
     min-height: auto;
-    padding-top: 3rem;
+    padding-top: calc(3rem - 6px);
+    padding-bottom: calc(5rem - 6px);
   }
 
   h1 {

@@ -8,7 +8,6 @@ import SectionContainer from "../ui/SectionContainer";
 
 export default function Hero({ isOpeningModal, isScrolledPastIntro, onOpenEstimate }) {
   const [isMounted, setIsMounted] = useState(false);
-  const [showMethodology, setShowMethodology] = useState(false);
   const [activePoint, setActivePoint] = useState(null);
 
   useEffect(() => {
@@ -51,23 +50,7 @@ export default function Hero({ isOpeningModal, isScrolledPastIntro, onOpenEstima
               Profesionalno održavanje dvorišta u Beogradu.
             </p>
             <div className="hero__methodology">
-              <button
-                aria-expanded={showMethodology}
-                className="hero__methodology-trigger"
-                onClick={() => isMounted && setShowMethodology((value) => !value)}
-                onMouseEnter={() => isMounted && setShowMethodology(true)}
-                type="button"
-              >
-                Methodology
-              </button>
-              <div
-                className={`hero__methodology-panel ${
-                  showMethodology ? "is-visible" : ""
-                }`.trim()}
-              >
-                Analiza terena, definisan ritam održavanja i precizna izvedba
-                svakog prolaza, ivice i tretmana.
-              </div>
+              <p className="hero__methodology-label">Methodology</p>
             </div>
             <div className="hero__actions">
               <Button isLoading={isOpeningModal} onClick={onOpenEstimate}>
