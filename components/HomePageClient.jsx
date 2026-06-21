@@ -44,14 +44,28 @@ export default function HomePageClient() {
   }, []);
 
   useEffect(() => {
+    let frameId = 0;
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolledPastIntro(window.scrollY > 200);
+      if (ticking) {
+        return;
+      }
+
+      ticking = true;
+      frameId = window.requestAnimationFrame(() => {
+        setIsScrolledPastIntro(window.scrollY > 200);
+        ticking = false;
+      });
     };
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.cancelAnimationFrame(frameId);
+    };
   }, []);
 
   useEffect(() => {

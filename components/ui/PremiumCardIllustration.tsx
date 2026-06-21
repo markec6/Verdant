@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 type IllustrationTone = "light" | "dark";
 
@@ -40,13 +41,31 @@ function getIconColors(tone: IllustrationTone) {
   };
 }
 
+function useLightMotion() {
+  const [lightMotion, setLightMotion] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 640px), (prefers-reduced-motion: reduce)");
+    const update = () => setLightMotion(media.matches);
+
+    update();
+    media.addEventListener("change", update);
+
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  return lightMotion;
+}
+
 function IllustrationArt({
   colors,
   isActive,
+  lightMotion,
   variant,
 }: {
   colors: ReturnType<typeof getIconColors>;
   isActive: boolean;
+  lightMotion: boolean;
   variant: string;
 }) {
   switch (variant) {
@@ -71,7 +90,15 @@ function IllustrationArt({
           <circle cx="20" cy="44" fill={colors.stroke} opacity="0.85" r="6" />
           <circle cx="44" cy="44" fill={colors.stroke} opacity="0.85" r="6" />
           <motion.g
-            animate={isActive ? { rotate: [0, 8, 0, -6, 0] } : { rotate: 0 }}
+            animate={
+              isActive
+                ? lightMotion
+                  ? { y: [0, -1.5, 0] }
+                  : { rotate: [0, 8, 0, -6, 0] }
+                : lightMotion
+                  ? { y: 0 }
+                  : { rotate: 0 }
+            }
             style={{ originX: "42px", originY: "28px" }}
             transition={loopTransition(2.4, isActive)}
           >
@@ -83,7 +110,7 @@ function IllustrationArt({
       return (
         <svg aria-hidden="true" className="premium-card-art__svg" viewBox="0 0 64 64">
           <motion.g
-            animate={isActive ? { scale: [1, 1.06, 1] } : { scale: 1 }}
+            animate={isActive ? { scale: lightMotion ? [1, 1.03, 1] : [1, 1.06, 1] } : { scale: 1 }}
             style={{ originX: "32px", originY: "36px" }}
             transition={loopTransition(2.9, isActive)}
           >
@@ -120,15 +147,25 @@ function IllustrationArt({
               strokeLinecap="round"
               strokeWidth="2"
             />
-            <motion.path
-              animate={isActive ? { pathLength: [0.3, 1, 0.3] } : { pathLength: 1 }}
-              d="M27 42l5 5 10-10"
-              fill="none"
-              stroke={colors.primary}
-              strokeLinecap="round"
-              strokeWidth="2"
-              transition={loopTransition(2.5, isActive)}
-            />
+            {!lightMotion ? (
+              <motion.path
+                animate={isActive ? { pathLength: [0.3, 1, 0.3] } : { pathLength: 1 }}
+                d="M27 42l5 5 10-10"
+                fill="none"
+                stroke={colors.primary}
+                strokeLinecap="round"
+                strokeWidth="2"
+                transition={loopTransition(2.5, isActive)}
+              />
+            ) : (
+              <path
+                d="M27 42l5 5 10-10"
+                fill="none"
+                stroke={colors.primary}
+                strokeLinecap="round"
+                strokeWidth="2"
+              />
+            )}
           </motion.g>
         </svg>
       );
@@ -174,13 +211,17 @@ function IllustrationArt({
             <rect fill={colors.primary} height="10" rx="2" width="28" x="18" y="32" />
             <circle cx="22" cy="44" fill={colors.stroke} opacity="0.9" r="4.5" />
             <circle cx="42" cy="44" fill={colors.stroke} opacity="0.9" r="4.5" />
-            <motion.path
-              animate={isActive ? { rotate: [0, 10, 0] } : { rotate: 0 }}
-              d="M44 28l12-5v8l-12 5v-8z"
-              fill={colors.accent}
-              style={{ originX: "50px", originY: "30px" }}
-              transition={loopTransition(1.9, isActive)}
-            />
+            {!lightMotion ? (
+              <motion.path
+                animate={isActive ? { rotate: [0, 10, 0] } : { rotate: 0 }}
+                d="M44 28l12-5v8l-12 5v-8z"
+                fill={colors.accent}
+                style={{ originX: "50px", originY: "30px" }}
+                transition={loopTransition(1.9, isActive)}
+              />
+            ) : (
+              <path d="M44 28l12-5v8l-12 5v-8z" fill={colors.accent} />
+            )}
           </motion.g>
         </svg>
       );
@@ -190,7 +231,11 @@ function IllustrationArt({
           <path d="M10 48c12-5 24-7 32-7s20 2 32 7" fill={colors.accent} opacity="0.45" />
           <motion.g
             animate={
-              isActive ? { scale: [1, 1.08, 1], rotate: [0, 4, 0] } : { scale: 1, rotate: 0 }
+              isActive
+                ? lightMotion
+                  ? { scale: [1, 1.04, 1] }
+                  : { scale: [1, 1.08, 1], rotate: [0, 4, 0] }
+                : { scale: 1, rotate: 0 }
             }
             style={{ originX: "32px", originY: "28px" }}
             transition={loopTransition(2.8, isActive)}
@@ -216,6 +261,7 @@ export default function PremiumCardIllustration({
   tone = "light",
 }: PremiumCardIllustrationProps) {
   const colors = getIconColors(tone);
+  const lightMotion = useLightMotion();
 
   return (
     <motion.div
@@ -230,7 +276,12 @@ export default function PremiumCardIllustration({
       initial={false}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <IllustrationArt colors={colors} isActive={isActive} variant={variant} />
+      <IllustrationArt
+        colors={colors}
+        isActive={isActive}
+        lightMotion={lightMotion}
+        variant={variant}
+      />
     </motion.div>
   );
 }

@@ -16,7 +16,7 @@ const getHighlightMotion = (tone: "default" | "light") => ({
     color: tone === "light" ? "#B8E0B0" : "#2D5A27",
   },
   transition: { duration: 0.5, ease: "easeOut", delay: 0.2 },
-  viewport: { once: true, amount: 0.8 },
+  viewport: { once: true, margin: "-100px" },
 });
 
 function sanitizeHighlightText(value: string) {
